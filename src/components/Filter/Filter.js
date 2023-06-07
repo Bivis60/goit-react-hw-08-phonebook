@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilter } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
 import { setFilter } from 'redux/filterSlice';
 import { Label } from 'components/ContactForm/ContactForm.styled';
 
 export const Filter = () => {
   const dispatch = useDispatch();
-  const filetrData = useSelector(getFilter);
+  const filetrData = useSelector(selectFilter);
 
   return (
     <Label>
