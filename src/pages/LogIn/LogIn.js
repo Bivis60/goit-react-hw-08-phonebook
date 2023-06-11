@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { register } from '../../redux/auth/authOperations';
-import { Form, Label } from './Register.styled';
+import { logIn } from '../../redux/auth/authOperations';
+import { Form, Label } from 'pages/Register/Register.styled';
 import { Button } from 'components/UserMenu/UserMenu.styled';
 
-const Register = () => {
+const LogIn = () => {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
-      case 'name':
-        return setName(value);
       case 'email':
         return setEmail(value);
       case 'password':
@@ -26,18 +23,13 @@ const Register = () => {
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.currentTarget;
-    dispatch(register({ name, email, password }));
-    setName('');
+    dispatch(logIn({ email, password }));
     setEmail('');
     setPassword('');
     form.reset();
   };
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
-      <Label>
-        Username
-        <input type="text" name="name" value={name} onChange={handleChange} />
-      </Label>
       <Label>
         Email
         <input
@@ -56,9 +48,9 @@ const Register = () => {
           onChange={handleChange}
         />
       </Label>
-      <Button type="submit">Register</Button>
+      <Button type="submit">Log In</Button>
     </Form>
   );
 };
 
-export default Register;
+export default LogIn;

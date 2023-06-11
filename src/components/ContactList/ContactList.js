@@ -4,10 +4,10 @@ import {
   selectError,
   selectFilter,
   selectIsLoading,
-} from 'redux/selectors';
+} from 'redux/contacts/selectors';
 import { Span, Li, Button } from './ContactList.styled';
 import { useEffect } from 'react';
-import { deleteContact, fetchContacts } from 'redux/operations';
+import { deleteContact, fetchContacts } from 'redux/contacts/operations';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -32,11 +32,11 @@ export const ContactList = () => {
       {isLoading && <p>Loading contacts...</p>}
       {error && <p>{error}</p>}
       <ul>
-        {getVisibleList().map(({ id, name, phone }) => {
+        {getVisibleList().map(({ id, name, number }) => {
           return (
             <Li key={id}>
               <Span>{name}: </Span>
-              <Span>{phone}</Span>
+              <Span>{number}</Span>
               <Button type="button" onClick={() => dispatch(deleteContact(id))}>
                 Delete
               </Button>

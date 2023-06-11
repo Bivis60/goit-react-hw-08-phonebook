@@ -1,30 +1,52 @@
-import { GlobalStyle } from 'GlobalStyle';
-import { Layout } from './Layout/Layout';
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Filter } from './Filter/Filter';
 import { AppBar } from './AppBar/AppBar';
-// import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshCurrentUser } from 'redux/auth/authOperations';
+import { GlobalStyle } from 'GlobalStyle';
+import { PrivateRoute } from './PrivateRoute';
+import { selectIsRefreshing } from 'redux/auth/authSelectors';
+import { PublicRoute } from './PublicRoute';
 
-// const Home = lazy(() => import('../pages/Home/Home'));
-// const Register = lazy(() => import('../pages/Register/Register'));
-// const LogIn = lazy(() => import('../pages/LogIn/Login'));
-// const Contacts = lazy(() => import('../pages/Contacts/Contact'));
+const Home = lazy(() => import('../pages/Home/Home'));
+const Register = lazy(() => import('../pages/Register/Register'));
+const LogIn = lazy(() => import('../pages/LogIn/LogIn'));
+const Contacts = lazy(() => import('../pages/Contacts/Contact'));
 
 export const App = () => {
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+  useEffect(() => {
+    dispatch(refreshCurrentUser());
+  }, [dispatch]);
+
   return (
-    <>
-      <GlobalStyle />
-      <AppBar />
-      <Layout>
-        <div>
-          <h1>Phonebook</h1>
-          <ContactForm />
-          <h2>Contacts</h2>
-          <Filter />
-          <ContactList />
-        </div>
-      </Layout>
-    </>
+    !isRefreshing && (
+      <>
+        <GlobalStyle />
+        <Routes>
+          <Route path="/" element={<AppBar />}>
+            <Route index element={<Home />} />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute component={Register} redirectTo="/contacts" />
+              }
+            />
+            <Route
+              path="/login"
+              element={<PublicRoute component={LogIn} redirectTo="/contacts" />}
+            />
+            <Route
+              path="/contacts"
+              element={
+                <PrivateRoute component={Contacts} redirectTo="/login" />
+              }
+            />
+            <Route path="*" element={<Home />} />
+          </Route>
+        </Routes>
+      </>
+    )
   );
 };

@@ -28,13 +28,15 @@ const hendleDeleteContactFulfilled = (state, action) => {
   state.items = state.items.filter(item => item.id !== action.payload.id);
 };
 
+const initialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
+
 export const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
+  initialState,
   extraReducers: builder =>
     builder
       .addCase(fetchContacts.pending, hendlePending)

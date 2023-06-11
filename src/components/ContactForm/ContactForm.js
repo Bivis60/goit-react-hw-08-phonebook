@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/contacts/selectors';
 import { Form, Label, Button } from './ContactForm.styled';
-import { addContact } from 'redux/operations';
+import { addContact } from 'redux/contacts/operations';
 
 export const ContactForm = () => {
   const [contact, setContact] = useState({
@@ -26,12 +26,12 @@ export const ContactForm = () => {
 
     const contact = {
       name: enteredData.name.value,
-      phone: enteredData.number.value,
+      number: enteredData.number.value,
     };
     const isContactExist = contactList.find(
-      ({ name, phone }) =>
+      ({ name, number }) =>
         name.toLowerCase() === contact.name.toLowerCase() ||
-        phone.trim() === contact.phone.trim()
+        number.trim() === contact.number.trim()
     );
     if (isContactExist) {
       return alert(`${name} is already in contacts`);
